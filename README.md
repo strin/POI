@@ -3,23 +3,23 @@ What is POI Query?
 
 This demo system provide queries of Point-of-Interest in Shanghai from a sample dataset. Users interact with the system first by dropping a pin to specify the location to start the query. 
 
-->![](img/overview.png =512x)<-
+<img src="img/overview.png" height="320px">
 
 Next, the user can specify options in the query, including
 
 * <b>Type of query</b>
 	* <b>Range Query </b>. The user can specify the radius of the region to search for POI around the pin through the following slider.<br>
-	![Range query](img/slider_range.png =256x)
+	<img src="img/slider_range.png" height="128px">
 				
 	* <b>Nearest Neighbor (NN)</b>. Just by sliding the controller to the leftmost, the user can switch to nearest-neighbor mode -- search for the closest facility. <br>
-	![Nearest neighbor](img/slider_nn.png =256x)
+	<img src="img/slider_nn.png" height="128px">
 
 * <b> Category </b>. Users can further choose the category of POI. For example, if the user is looking for Chinese restaurants (food), it could might the following categories. <br>
-![category](img/category.png =256x)
+<img src="img/category.png" height="256px">
 	
 The system takes the user queries with options, and overlays the results on the map. Each star indicates a location found in the database, and it is annotated with the name in the information box. 
 
-->![result](img/result.png =512x)<-
+<img src="img/result.png" height="320px">
 
 
 # Dataset

@@ -67,9 +67,9 @@ python server.py
 
 It should output
 
-`
+```
  * Running on http://127.0.0.1:8080/
-`
+```
 
 ## Experience in Browser.
 

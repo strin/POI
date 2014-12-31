@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+   <head>
+      <title>POI Hub</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+      <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+      <script type="text/javascript">
+          var map = null;
+          var pin = null;
+          var pin_poi = [];
+          var infobox_poi = [];
+          function GetMap()
+          {
+            map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), {
+                credentials:"Aohbz9yD_kJ9Ao5II-lANVZ1Bf8t43wzgHrMTqFBFrXGT_SsaWowVKr1MeWEQemz", 
+                center: new Microsoft.Maps.Location({{centery}}, {{centerx}}),
+                mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
+                zoom: 12,
+              });
+
+            Microsoft.Maps.Events.addHandler(map, 'click', displayEventInfo);
+
+            // {%for center in centers[:10]%}
+            //   {%if center[2] != ''%}
+            //     var loc = new Microsoft.Maps.Location({{center[1]}}, {{center[0]}});
+            //     var pin = new Microsoft.Maps.Pushpin(loc, {text: "{{center[2]}}"}); 
+            //     map.entities.push(pin);
+            //   {%endif%}
+            // {%endfor%}
+
+
+          }
+
+          function removePin(pin) {
+            var index = map.entities.indexOf(pin);
+            map.entities.removeAt(index);
+          }
+
+          function displayEventInfo(e) {
+            if (e.targetType == "map") {
+              var point = new Microsoft.Maps.Point(e.getX(), e.getY());
+              var loc = e.target.tryPixelToLocation(point);
+              if(pin != null) {
+                removePin(pin);
+                for(var i = 0; i < pin_poi.length; i++) {
+                  removePin(pin_poi[i]);
+                }
+                for(var i = 0; i < infobox_poi.length; i++) {
+                  removePin(infobox_poi[i]);
+                }
+                pin_poi = [];
+                infobox_poi = [];
+              }
+              pin = new Microsoft.Maps.Pushpin(loc, {icon: "{{url_for('static', filename='img/pushpin.png')}}", width: 50, height: 50, draggable: true, zIndex: 10000}); 
+              map.entities.push(pin);
+              poi();
+            }
+          }
+      </script>
+
+      <style>
+        #theSlider {
+          background: #CCCCCC;
+          width: 200px;
+          height: 20px;
+        }
+        #theSlider .slider-selection {
+          background: #BABABA;
+        }
+      </style>
+
+      <link href="{{url_for('static', filename='css/iconFont.css') }}" rel="stylesheet">
+      <link href="{{url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+      <link href="{{url_for('static', filename='css/metro-bootstrap.css') }}" rel="stylesheet" >
+      <link href="{{url_for('static', filename='css/metro-bootstrap-responsive.css') }}" rel="stylesheet">
+      <link href="{{url_for('static', filename='css/bootstrap-slider.css') }}" rel="stylesheet">
+      <script src="{{url_for('static', filename='js/jquery/jquery-2.1.3.js') }}"></script>
+      <script src="{{url_for('static', filename='js/jquery/jquery.widget.min.js') }}"></script>
+      <script src="{{url_for('static', filename='js/metro/metro.min.js') }}"></script>
+      <script src="{{url_for('static', filename='js/bootstrap/bootstrap-slider.js') }}"></script>
+   </head>
+   <body onload="GetMap();" class="metro" style="background: black;"> 
+      <div style="width: 400px; position: absolute; z-index: 10000;">
+        <nav class="sidebar (light)">
+          <ul>
+            <li class="title" id="tg_category"><i class="icon-arrow-right-3" id="icon_category"></i>&nbsp; POI Hub</li>
+          </ul>
+        </nav>
+        <nav class="sidebar (light)" id="dp_category" style="display: block; background:  #CCCCCC;">
+          <ul>
+              <li class="stick">
+                  <a>选项</a>
+                  
+                  <br>
+                  <center style="width: 90%;">
+                    <input id="slider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="5000" data-slider-step="1" data-slider-value="14" /> &nbsp; 
+                    <span style="height: 20px; width: 100px; background-color: black; color: white; float: right; " id="slider_val"></span> 
+                  </center>
+                  <br>
+
+              </li>
+
+
+              <li class="stick bg-yellow" id="category1">
+                <a class="dropdown-toggle" href="#" id="text_cat1"><i class="icon-tree-view"></i>选择大类</a>
+                <ul class="dropdown-menu" data-role="dropdown">
+                    <div class="input-control select">
+                    <select size='6' id="select_cat1">
+                        {%for cat in main_category%}
+                          <option>{{cat}}</option>   
+                        {%endfor%}
+                    </select>
+                  </div>
+                </ul>
+              </li>
+
+              <li class="stick bg-yellow" id="category2" style="display:none;">
+                <a class="dropdown-toggle" href="#" id="text_cat2"><i class="icon-tree-view"></i>选择中类</a>
+                <ul class="dropdown-menu" data-role="dropdown">
+                    <div class="input-control select">
+                    <select size='6' id="select_cat2">
+                        <option>Value 1</option>
+                        <option>Value 2</option>
+                        <option>Value 3</option>
+                    </select>
+                  </div>
+                </ul>
+              </li>
+
+              <li class="stick bg-yellow" id="category3" style="display:none;">
+                <a class="dropdown-toggle" href="#" id="text_cat3"><i class="icon-tree-view"></i>选择小类</a>
+                <ul class="dropdown-menu" data-role="dropdown">
+                    <div class="input-control select">
+                    <select size='6' id="select_cat3">
+                        <option>Value 1</option>
+                        <option>Value 2</option>
+                        <option>Value 3</option>
+                    </select>
+                  </div>
+                </ul>
+              </li>
+
+              
+          </ul>
+        </nav>
+      </div>
+      
+
+      <div id='mapDiv' style="position:absolute; width:100%; height:100%; top: 0; left: 0;"></div>
+
+      <script>
+        var RANGE_THRESHOLD = 5;
+        var cat = 0;
+
+
+        // slider.
+        var slider = new Slider('#slider', {
+          formatter: function(value) {
+            return 'Current value: ' + value;
+          }, 
+          tooltip: 'hide'
+        });
+
+        var valueChange = function() {
+          var val = slider.getValue();
+          if(val < RANGE_THRESHOLD) {
+            $('#slider_val').html('closest');
+          }else{
+            $('#slider_val').html(val + ' m');
+          }
+          poi();
+        };
+
+        $('#slider').slider()
+            .on('slideStop', valueChange);
+        
+        slider.setValue(0);
+        $('#slider_val').html('closest');
+
+        // select category.
+        $('#select_cat1').change(function() {
+          var selected = $('#select_cat1').val();
+          $('#text_cat1').html(selected);
+          $('#category2').css('display', 'block');
+          $('#text_cat2').html('<i class="icon-tree-view"></i>选择中类</a>');
+          $('#category3').css('display', 'none');
+
+          $.post( "/category1", {cat: selected}).done(function(data) {
+            html = ''
+            for(var i = 0; i < data.cat.length; i++) {
+              html += '<option>'+data.cat[i]+'</option>'
+            }
+            $('#select_cat2').html(html);
+          });
+        });
+
+        $('#select_cat2').change(function() {
+          var selected1 = $('#select_cat1').val();
+          var selected2 = $('#select_cat2').val();
+          $('#text_cat2').html(selected2);
+          $('#category3').css('display', 'block');
+          $('#text_cat3').html('<i class="icon-tree-view"></i>选择小类</a>');
+
+          $.post( "/category2", {cat1: selected1, cat2: selected2}).done(function(data) {
+            html = ''
+            for(var i = 0; i < data.cat.length; i++) {
+              html += '<option>'+data.cat[i]+'</option>'
+            }
+            $('#select_cat3').html(html);
+          });
+        });
+
+        $('#select_cat3').change(function() {
+          var selected1 = $('#select_cat1').val();
+          var selected2 = $('#select_cat2').val();
+          var selected3 = $('#select_cat3').val();
+          $('#text_cat3').html(selected3);
+
+          $.post( "/category3", {cat1: selected1, cat2: selected2, cat3: selected3}).done(function(data) {
+            cat = data.id;
+            poi();
+          });
+        });
+
+        $(function() {
+          $('#tg_category').bind('click', function() {
+            var category_display = $('#dp_category').css('display');
+            if(category_display == 'block') {
+              $('#dp_category').css('display', 'none');
+              $('#dp_category').css('-webkit-animation-duration', '1s');
+              $('#icon_category').removeClass('icon-arrow-down-3');
+              $('#icon_category').addClass('icon-arrow-right-3');
+            }else{
+              $('#dp_category').css('display', 'block');
+              $('#dp_category').css('-webkit-animation-duration', '1s');
+              $('#icon_category').removeClass('icon-arrow-right-3');
+              $('#icon_category').addClass('icon-arrow-down-3');
+            }
+          });
+        });
+
+        var poi = function() {
+          if(pin == null) {
+            alert('Please drop a pin!');
+            return;
+          }
+          var loc = pin.getLocation();
+          var range = slider.getValue();
+          if(range < RANGE_THRESHOLD) {
+            range = 0;
+          }
+          $.post( "/poi", {cat: cat, piny: loc.latitude, pinx: loc.longitude, range: range}).done(function(data) {
+            dt = data.data;
+            if(dt.length == 0) {
+              alert("POI not found.");
+              return;
+            }
+
+            for(var i = 0; i < dt.length; i++) {
+              var loc = new Microsoft.Maps.Location(parseFloat(dt[i].Y_COORD), parseFloat(dt[i].X_COORD));
+              var new_pin = new Microsoft.Maps.Pushpin(loc, {icon: "{{url_for('static', filename='img/star.png')}}", width: 20, height: 20, draggable: false}); 
+              map.entities.push(new_pin);  
+              pin_poi[pin_poi.length] = new_pin;
+              var pin_infobox = new Microsoft.Maps.Infobox(new_pin.getLocation(), 
+                        {title: dt[i].NAME, 
+                         description: '', 
+                          visible: true, 
+                          height: 50,
+                          width: 128,
+                          offset: new Microsoft.Maps.Point(0,15), 
+                          showCloseButton: false,
+                          zIndex: infobox_poi.length,
+                        });
+              infobox_poi[infobox_poi.length] = pin_infobox;
+              map.entities.push(pin_infobox);
+            }
+          });
+        }
+      </script>
+   </body>
+</html>

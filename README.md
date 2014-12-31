@@ -3,7 +3,7 @@ What is POI Query?
 
 This demo system provide queries of Point-of-Interest in Shanghai from a sample dataset. Users interact with the system first by dropping a pin to specify the location to start the query. 
 
-->![](img/overview.png =512x)<-
+->![](img/overview.png?raw=true =512x)<-
 
 Next, the user can specify options in the query, including
 

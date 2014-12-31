@@ -1,7 +1,7 @@
 What is POI Query?
 =================
 
-This demo system provide queries of Point-of-Interest in Shanghai from a sample dataset. Users interact with the system first by dropping a pin to specify the location to start the query. 
+This demo system provides queries of Point-of-Interest in Shanghai from a sample dataset. Users can interact with the system first by dropping a pin to specify the location of a query. 
 
 <img src="img/overview.png" height="320px">
 
@@ -14,10 +14,10 @@ Next, the user can specify options in the query, including
 	* <b>Nearest Neighbor (NN)</b>. Just by sliding the controller to the leftmost, the user can switch to nearest-neighbor mode -- search for the closest facility. <br>
 	<img src="img/slider_nn.png" height="128px">
 
-* <b> Category </b>. Users can further choose the category of POI. For example, if the user is looking for Chinese restaurants (food), it could might the following categories. <br>
+* <b> Category </b>. Users can further choose the category of POI. For example, if the user is looking for Chinese restaurants (food), it could might select the following categories. <br>
 <img src="img/category.png" height="256px">
 	
-The system takes the user queries with options, and overlays the results on the map. Each star indicates a location found in the database, and it is annotated with the name in the information box. 
+The system takes the user queries with options, and overlays the results on the map. Each star indicates a location found in the database, and it is annotated with the name shown in the information box. 
 
 <img src="img/result.png" height="320px">
 
@@ -59,7 +59,7 @@ sudo pip install flask
 
 ## Set up Server.
 
-Entry the project directory and run 
+Enter the project directory and run 
 
 ```
 python server.py
